@@ -1,6 +1,4 @@
 # Imports
-# A new line added
-
 import urllib.request
 from pytube import YouTube as yt
 from mutagen.mp4 import MP4, MP4Cover

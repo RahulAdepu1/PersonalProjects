@@ -1,5 +1,3 @@
-# A new line added
-
 # Imports
 import urllib.request
 from pytube import YouTube as yt

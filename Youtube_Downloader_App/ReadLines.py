@@ -1,4 +1,3 @@
-# A new line added
 
 txtFileOfYoutubeLinks = open('Links.txt', 'r')
 for line in txtFileOfYoutubeLinks.readlines():

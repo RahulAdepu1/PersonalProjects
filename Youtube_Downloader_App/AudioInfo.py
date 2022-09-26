@@ -1,6 +1,4 @@
-# A new line added
 import time
-
 from selenium import webdriver
 from selenium import Service
 from selenium import Options
