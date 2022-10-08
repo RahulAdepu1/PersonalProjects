@@ -84,7 +84,7 @@ for line in txtFileOfYoutubeLinks.readlines()[2:]:
         songFile['covr'] = [covr]  # make sure it's a list
 
         songFile.save()
-        print(f'Successful + {count}')
+        print(f'Successful downloaded {count} songs')
         print("*****************************")
 print("********** All Done *********")
 print("*****************************")
