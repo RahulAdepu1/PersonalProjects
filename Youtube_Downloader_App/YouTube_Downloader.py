@@ -6,10 +6,10 @@ import os.path
 
 count=0
 # Read the file with all the links of the songs
-txtFileOfYoutubeLinks = open('Txt Files of Links/Hindi/2021.txt', 'r')
+txtFileOfYoutubeLinks = open('Txt Files of Links/New Songs.txt', 'r')
 
 # txtFileOfYoutubeLinks = open('Links.txt', 'r')
-for line in txtFileOfYoutubeLinks.readlines():
+for line in txtFileOfYoutubeLinks.readlines()[2:]:
     count = count+1
     songName = line.split("||")[0]
     print("Song Name : "+songName)
@@ -54,6 +54,7 @@ for line in txtFileOfYoutubeLinks.readlines():
     if os.path.isfile(f'{finalDirectory}/{songName}.mp4'):
         print("File Exists")
         print("Skipping")
+        print("*****************************")
     else:
         print("**** Creating a New File ****")
         audio[x].download(finalDirectory, filename=songName + ".mp4")
