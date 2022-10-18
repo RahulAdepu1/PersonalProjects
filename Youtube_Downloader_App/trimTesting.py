@@ -1,27 +1,46 @@
+import tinytag
 from pydub import AudioSegment
 from moviepy.editor import *
 
-audioConveretFile = AudioFileClip("/Users/rahuladepu/Desktop/My Files/Audio/2022/Amtee/Shades Of Love Mashup.mp4")
-audioConveretFile.write_audiofile("/Users/rahuladepu/Desktop/My Files/Audio/2022/Amtee/Shades Of Love Mashup.mp3")
-audioConveretFile.close()
 
-#importing file from location by giving its path
-sound = AudioSegment.from_mp3("/Users/rahuladepu/Desktop/My Files/Audio/2022/Amtee/Shades Of Love Mashup.mp3")
+finalDirectory="/Users/rahuladepu/Desktop/My Files/Audio/2022/Amtee/"
+songName = "Shades Of Love Mashup"
 
-#Selecting Portion we want to cut
-StrtMin = 0
-StrtSec = 0
-EndMin = 0
-EndSec = 21
+videoConvertFile = VideoFileClip(f'{finalDirectory}/{songName}.mp4')
+audioConvertFile = videoConvertFile.audio
+audioConvertFile.write_audiofile(f'{finalDirectory}/{songName}.mp3')
+audioConvertFile.close()
+videoConvertFile.close()
+
+# importing file from location by giving its path
+sound = AudioSegment.from_mp3(f'{finalDirectory}/{songName}.mp3')
+
+# Selecting Portion we want to cut
+music_duration_in_seconds = sound.duration_seconds
+EndMin = int(music_duration_in_seconds/60)
+print(EndMin)
+EndSec = int(music_duration_in_seconds%60)
+print(EndSec)
 
 # Time to milliseconds conversion
-StrtTime = StrtMin*60*1000+StrtSec*1000
-EndTime = StrtMin*60*1000+EndSec*1000
+EndTime = EndMin*60*1000+EndSec*1000
 
 # Opening file and extracting portion of it
-extract = sound[StrtTime:EndTime]
+extract = sound[0:EndTime]
 
 # Saving file in required location
-extract.export("/Users/rahuladepu/Desktop/My Files/Audio/2022/Amtee/trimmed.mp3", format="mp3")
+trimmedName = "Trimmed Audio"
+extract.export(f'{finalDirectory}/{songName}.mp3', format="mp3")
+#
+# audio = EasyID3(f'{finalDirectory}/{trimmedName}.mp3')
+# print(audio['title'])
+# audio['title'] = u"Example Title"
+# audio['artist'] = u"Me"
+# audio['album'] = u"My album"
+# audio['composer'] = u"" # clear
+# audio.save()
+#
+# print(audio['title'])
+# print(audio['artist'])
 
 # new file portion.mp3 is saved at required location

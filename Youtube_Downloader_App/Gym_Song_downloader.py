@@ -5,13 +5,18 @@ from mutagen.mp4 import MP4, MP4Cover
 import os.path
 from moviepy.editor import *
 
-count = 0
+songCount = 0
+downloadCount = 0
 # Read the file with all the links of the songs
-txtFileOfYoutubeLinks = open('TTxt Files of Links/Gym Songs.txt', 'r')
+txtFileOfYoutubeLinks = open('Txt Files of Links/Gym Songs.txt', 'r')
 
 # txtFileOfYoutubeLinks = open('Links.txt', 'r')
 for line in txtFileOfYoutubeLinks.readlines()[2:]:
-    count = count+1
+
+    songCount = songCount+1
+    print(f'Song on line number {songCount + 2}')
+    print("*****************************")
+
     songName = line.split("||")[0]
     print("Song Name : "+songName)
     artist = line.split("||")[1]
@@ -39,40 +44,21 @@ for line in txtFileOfYoutubeLinks.readlines()[2:]:
     for i in audioList:
         x = x + 1
 
-    # Create a folder for the audio files to be stored
-    directory = "Gym_Songs/"+album
-    parentDirectory = "/Users/rahuladepu/Desktop/My Files/Audio/"
+    videoDirectory = "/Users/rahuladepu/Desktop/My Files/Video/Gym_Songs"
 
-    if os.path.isdir(f'{parentDirectory}/{directory}'):
-        print("Folder Exists")
-        finalDirectory = parentDirectory + "/" + directory
-    else:
-        print("**** Creating a New Folder ****")
-        finalDirectory = os.path.join(parentDirectory, directory)
-        os.makedirs(finalDirectory)
-
-    if os.path.isfile(f'{finalDirectory}/{songName}.mp4'):
+    if os.path.isfile(f'{videoDirectory}/{songName}.mp4'):
         print("File Exists")
         print("Skipping")
         print("*****************************")
     else:
         print("**** Creating a New File ****")
-        audio[x].download(finalDirectory, filename=songName + ".mp4")
+        audio[x].download(videoDirectory, filename=songName + ".mp4")
+
+        downloadCount = downloadCount + 1
 
         # Mutagen library
-        songPath = f'{finalDirectory}/{songName}.mp4'
+        songPath = f'{videoDirectory}/{songName}.mp4'
         songFile = MP4(songPath)
-
-        songFile['\xa9nam'] = songName
-        # print(songFile['\xa9nam'])
-        songFile['\xa9alb'] = album
-        # print(songFile['\xa9alb'])
-        songFile['\xa9day'] = year
-        # print(songFile['\xa9day'])
-        songFile['\xa9wrt'] = composer
-        # print(songFile['\xa9wrt'])
-        songFile['\xa9ART'] = artist
-        # print(songFile['\xa9ART'])
 
         fd = urllib.request.urlopen(coverArtwork)
         # Drop the entire PIL part
@@ -85,7 +71,31 @@ for line in txtFileOfYoutubeLinks.readlines()[2:]:
         songFile['covr'] = [covr]  # make sure it's a list
 
         songFile.save()
-        print(f'Successful downloaded {count} songs')
+        print(f'Successful downloaded {downloadCount} songs')
         print("*****************************")
+
+    # # Create a folder for the audio files to be stored
+    # directory = "Gym_Songs"
+    # parentDirectory = "/Users/rahuladepu/Desktop/My Files/Audio/"
+    #
+    # if os.path.isdir(f'{parentDirectory}/{directory}'):
+    #     print("Folder Exists")
+    #     finalDirectory = parentDirectory + "/" + directory
+    # else:
+    #     print("**** Creating a New Folder ****")
+    #     finalDirectory = os.path.join(parentDirectory, directory)
+    #     os.makedirs(finalDirectory)
+    #
+    # if os.path.isfile(f'{videoDirectory}/{songName}.mp4'):
+    #     print("File Exists")
+    #     print("Skipping")
+    #     print("*****************************")
+    # else:
+    #     print("**** Creating a New File ****")
+    #     videoConvertFile = VideoFileClip(f'{finalDirectory}/{songName}.mp4')
+    #     audioConvertFile = videoConvertFile.audio
+    #     audioConvertFile.write_audiofile(f'{finalDirectory}/{songName}.mp3')
+    #     audioConvertFile.close()
+    #     videoConvertFile.close()
 print("********** All Done *********")
 print("*****************************")

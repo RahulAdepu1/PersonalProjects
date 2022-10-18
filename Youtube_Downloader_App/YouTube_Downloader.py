@@ -3,15 +3,14 @@ import urllib.request
 from pytube import YouTube as yt
 from mutagen.mp4 import MP4, MP4Cover
 import os.path
-from pydub import AudioSegment
 from moviepy.editor import *
 
 count = 0
 # Read the file with all the links of the songs
-txtFileOfYoutubeLinks = open('Txt Files of Links/New Songs.txt', 'r')
+txtFileOfYoutubeLinks = open('Test_File.txt', 'r')
 
 # txtFileOfYoutubeLinks = open('Links.txt', 'r')
-for line in txtFileOfYoutubeLinks.readlines()[2:]:
+for line in txtFileOfYoutubeLinks.readlines():
     count = count+1
     songName = line.split("||")[0]
     print("Song Name : "+songName)
@@ -32,7 +31,7 @@ for line in txtFileOfYoutubeLinks.readlines()[2:]:
     coverArtwork = video.thumbnail_url
 
     # Look for mp4 Audio Files
-    audio = video.streams.filter(mime_type="audio/mp4")
+    audio = video.streams.filter(progressive=True)
     audioList = list(enumerate(audio))
 
     # Loop Condition to Number all the available audio format
@@ -61,20 +60,6 @@ for line in txtFileOfYoutubeLinks.readlines()[2:]:
         print("**** Creating a New File ****")
         audio[x].download(finalDirectory, filename=songName + ".mp4")
 
-        # # Trim Video
-        # # Selecting Portion we want to cut
-        # StrtMin = 0
-        # StrtSec = 0
-        # EndMin = 7
-        # EndSec = 0
-        # # Time to milliseconds conversion
-        # StrtTime = StrtMin * 60 * 1000 + StrtSec * 1000
-        # EndTime = StrtMin * 60 * 1000 + EndSec * 1000
-        #
-        # soundTrim = AudioSegment.from_mp3(f'{finalDirectory}/{songName}.mp3')
-        # outputTrim = soundTrim[StrtTime:EndTime]
-        # outputTrim.export(f'{finalDirectory}/{songName}.mp3', format="mp3")
-
         # Mutagen library
         songPath = f'{finalDirectory}/{songName}.mp4'
         songFile = MP4(songPath)
@@ -99,13 +84,8 @@ for line in txtFileOfYoutubeLinks.readlines()[2:]:
         ))
         fd.close()
         songFile['covr'] = [covr]  # make sure it's a list
+
         songFile.save()
-
-        # # Convert the mp4 files to mp3 files
-        # audioConveretFile = AudioFileClip(f'{finalDirectory}/{songName}.mp4')
-        # audioConveretFile.write_audiofile(f'{finalDirectory}/{songName}.mp3')
-        # audioConveretFile.close()
-
         print(f'Successful downloaded {count} songs')
         print("*****************************")
 print("********** All Done *********")
